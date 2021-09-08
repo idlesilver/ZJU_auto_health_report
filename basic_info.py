@@ -1,0 +1,6 @@
+ZJU_USERNAME    = "318xxxxxxx"
+ZJU_PASSWD      = "xxxxxxxxxxx"
+FROM_EMAIL      = "xxxxxxx@qq.com"
+EMAIL_PASSWD    = "xxxxxxxxxxxxx"
+HOST            = "smtp.qq.com"
+TO_EMAIL        = "xxxxxxxxx.18@intl.zju.edu.cn"
