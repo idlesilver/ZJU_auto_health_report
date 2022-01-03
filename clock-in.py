@@ -11,7 +11,9 @@ import time
 import requests
 import yagmail
 
-from basic_info import *
+from basic_info import email_server, users
+
+
 class DaKa(object):
     """Hit card class
 
@@ -185,10 +187,11 @@ class Log:
         self.email_bot.send_email(self.log_cache, "success")
 
 
-if __name__ == "__main__":
-    email_bot = EmailBot(TO_EMAIL, FROM_EMAIL, EMAIL_PASSWD, HOST)
+def main(email_server, user):
+    email_bot = EmailBot(user["TO_EMAIL"], email_server["FROM_EMAIL"],
+                         email_server["EMAIL_PASSWD"], email_server["HOST"])
     log = Log(email_bot)
-    dk = DaKa(ZJU_USERNAME, ZJU_PASSWD)
+    dk = DaKa(user["ZJU_USERNAME"], user["ZJU_PASSWD"])
 
     log.info("打卡任务启动")
 
@@ -198,6 +201,7 @@ if __name__ == "__main__":
         log.info("已登录到浙大统一身份认证平台")
     except Exception as err:
         log.error(str(err))
+        return
 
     log.info('正在获取个人信息...')
     try:
@@ -205,6 +209,7 @@ if __name__ == "__main__":
         log.info('%s %s同学, 你好~' % (dk.info['number'], dk.info['name']))
     except Exception as err:
         log.error('获取信息失败，请手动打卡，更多信息: ' + str(err))
+        return
 
     try:
         res = dk.post()
@@ -214,5 +219,11 @@ if __name__ == "__main__":
             log.warning(res['m'])
     except Exception:
         log.error('数据提交失败')
+        return
 
     log.end_with_success()
+
+
+if __name__ == "__main__":
+    for name in users:
+        main(email_server,users[name])
