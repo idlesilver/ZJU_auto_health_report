@@ -1,6 +1,13 @@
-ZJU_USERNAME    = "318xxxxxxx"
-ZJU_PASSWD      = "xxxxxxxxxxx"
-FROM_EMAIL      = "xxxxxxx@qq.com"
-EMAIL_PASSWD    = "xxxxxxxxxxxxx"
-HOST            = "smtp.qq.com"
-TO_EMAIL        = "xxxxxxxxx.18@intl.zju.edu.cn"
+email_server = {
+    "FROM_EMAIL": "xxxxxxxxxxxxxxx@qq.com",
+    "EMAIL_PASSWD": "xxxxxxxxxxxxxxxxx",
+    "HOST": "smtp.qq.com"
+}
+
+users = {
+    "chz": {
+        "ZJU_USERNAME": "318xxxxxxxx",
+        "ZJU_PASSWD": "xxxxxxxxxx",
+        "TO_EMAIL": "xxxxxxxxx.18@intl.zju.edu.cn"
+    }
+}
