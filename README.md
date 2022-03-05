@@ -10,7 +10,12 @@
 # 快速上手
 
 ## 基础配置
-1. 安装 yagmail 第三方库 `pip install yagmail`
+1. 安装 yagmail 第三方库 
+    ```
+    pip install yagmail
+    # 2022-3-5 亲测最新版的yagmail有些问题，会出现没有邮件正文的情况，安装旧版本可以解决这个问题，建议以下命令。
+    pip install yagmail=0.14.260
+    ```
 2. 打开 `basic_info.py` 填写相应配置
 3. windows运行 `打卡.bat`，linux运行 `打卡.sh`
 
