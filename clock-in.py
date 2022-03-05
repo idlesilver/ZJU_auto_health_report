@@ -95,21 +95,25 @@ class DaKa(object):
         new_info['number'] = number
         new_info["date"] = self.get_date()
         new_info["created"] = round(time.time())
-        new_info["address"] = "浙江省杭州市西湖区"
-        new_info["area"] = "浙江省 杭州市 西湖区"
+        new_info["address"] = "浙江省嘉兴市海宁市"
+        new_info["area"] = "浙江省 嘉兴市 海宁市"
         new_info["province"] = new_info["area"].split(' ')[0]
         new_info["city"] = new_info["area"].split(' ')[1]
         # form change
         new_info['jrdqtlqk[]'] = 0
         new_info['jrdqjcqk[]'] = 0
-        new_info['sfsqhzjkk'] = 1   # 是否申领杭州健康码
-        new_info['sqhzjkkys'] = 1   # 杭州健康吗颜色，1:绿色 2:红色 3:黄色
+        new_info['sfsqhzjkk'] = 1   # 是否申请杭州健康卡
+        new_info['sqhzjkkys'] = 1   # 申请杭州健康卡颜色，1:绿色 2:红色 3:黄色
         new_info['sfqrxxss'] = 1    # 是否确认信息属实
         new_info['jcqzrq'] = ""
         new_info['gwszdd'] = ""
         new_info['szgjcs'] = ""
         self.info = new_info
         return new_info
+
+    def set_info(self,info_dict):
+        for key in info_dict:
+            self.info[key]=info_dict[key]
 
     def _rsa_encrypt(self, password_str, e_str, M_str):
         password_bytes = bytes(password_str, 'ascii')
@@ -206,6 +210,7 @@ def main(email_server, user):
     log.info('正在获取个人信息...')
     try:
         dk.get_info()
+        dk.set_info(user["SPECIFIED_INFO"])
         log.info('%s %s同学, 你好~' % (dk.info['number'], dk.info['name']))
     except Exception as err:
         log.error('获取信息失败，请手动打卡，更多信息: ' + str(err))
