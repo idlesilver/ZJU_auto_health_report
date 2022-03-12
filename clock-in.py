@@ -7,6 +7,7 @@ import json
 import logging
 import re
 import time
+import os
 
 import requests
 import yagmail
@@ -82,7 +83,8 @@ class DaKa(object):
 
             new_info_tmp = json.loads(re.findall(r'def = ({[^\n]+})', html)[0])
             new_id = new_info_tmp['id']
-            name = re.findall(r'realname: "([^\"]+)",', html)[0]
+            # NOTE: 2022-03-12 原始数据不再返回realname字段，这里暂时注释，使用配置文件强制修改，静观其变
+            # name = re.findall(r'realname: "([^\"]+)",', html)[0]
             number = re.findall(r"number: '([^\']+)',", html)[0]
         except IndexError:
             raise RegexMatchError('Relative info not found in html with regex')
@@ -91,7 +93,8 @@ class DaKa(object):
 
         new_info = old_info.copy()
         new_info['id'] = new_id
-        new_info['name'] = name
+        # NOTE: 2022-03-12 原始数据不再返回realname字段，这里暂时注释，使用配置文件强制修改，静观其变
+        new_info['name'] = "" #name
         new_info['number'] = number
         new_info["date"] = self.get_date()
         new_info["created"] = round(time.time())
@@ -162,7 +165,7 @@ class Log:
     def __init__(self, email_bot: EmailBot):
         logging.basicConfig(
             level=logging.INFO,
-            filename="log.txt",
+            filename=os.path.join(os.getcwd(),"clock-in.log"),
             format="%(message)s")
         self.email_bot = email_bot
         self.start_up()
@@ -211,7 +214,7 @@ def main(email_server, user):
     try:
         dk.get_info()
         dk.set_info(user["SPECIFIED_INFO"])
-        log.info('%s %s同学, 你好~' % (dk.info['number'], dk.info['name']))
+        log.info(f"{dk.info['number']} {dk.info['name']}同学, 你好~")
     except Exception as err:
         log.error('获取信息失败，请手动打卡，更多信息: ' + str(err))
         return
