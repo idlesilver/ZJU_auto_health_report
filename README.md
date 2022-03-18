@@ -38,7 +38,7 @@ crontab -e
 
 新增一行
 ```
-0 9 * * * bash {文件夹路径}/ZJU_auto_health_report/clock-in.sh 2>&1 null
+0 9 * * * python3 {文件夹路径}/ZJU_auto_health_report/clock-in.py 2>&1 null
 ```
 
 

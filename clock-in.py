@@ -165,7 +165,7 @@ class Log:
     def __init__(self, email_bot: EmailBot):
         logging.basicConfig(
             level=logging.INFO,
-            filename=os.path.join(os.getcwd(),"clock-in.log"),
+            filename=os.path.join(os.path.dirname(os.path.realpath(__file__)),"clock-in.log"),
             format="%(message)s")
         self.email_bot = email_bot
         self.start_up()
