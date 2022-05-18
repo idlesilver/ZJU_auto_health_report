@@ -11,6 +11,7 @@ import os
 
 import requests
 import yagmail
+import ddddocr
 
 from basic_info import email_server, users
 
@@ -33,6 +34,7 @@ class DaKa(object):
         self.login_url = "https://zjuam.zju.edu.cn/cas/login?service=https%3A%2F%2Fhealthreport.zju.edu.cn%2Fa_zju%2Fapi%2Fsso%2Findex%3Fredirect%3Dhttps%253A%252F%252Fhealthreport.zju.edu.cn%252Fncov%252Fwap%252Fdefault%252Findex"
         self.base_url = "https://healthreport.zju.edu.cn/ncov/wap/default/index"
         self.save_url = "https://healthreport.zju.edu.cn/ncov/wap/default/save"
+        self.verify_code_url = "https://healthreport.zju.edu.cn/ncov/wap/default/code"
         self.sess = requests.Session()
 
     def login(self):
@@ -117,6 +119,22 @@ class DaKa(object):
     def set_info(self,info_dict):
         for key in info_dict:
             self.info[key]=info_dict[key]
+
+    def verifiy_code(self):
+        r = self.sess.get(self.verify_code_url)
+        # with open('code.png','wb')as f:
+        #     f.write(r.content)
+            # print("下载验证码成功！")
+        ocr = ddddocr.DdddOcr()
+        #with open(r'C:\Users\Administrator\Desktop\验证码识别\code.png', 'rb') as f:
+            #img_bytes = f.read()
+        img_bytes=r.content
+
+        res = ocr.classification(img_bytes)
+
+        self.info["verifyCode"] = res
+        
+        return res
 
     def _rsa_encrypt(self, password_str, e_str, M_str):
         password_bytes = bytes(password_str, 'ascii')
@@ -213,6 +231,7 @@ def main(email_server, user):
     log.info('正在获取个人信息...')
     try:
         dk.get_info()
+        dk.verifiy_code()
         dk.set_info(user["SPECIFIED_INFO"])
         log.info(f"{dk.info['number']} {dk.info['name']}同学, 你好~")
     except Exception as err:
@@ -235,3 +254,5 @@ def main(email_server, user):
 if __name__ == "__main__":
     for name in users:
         main(email_server,users[name])
+
+    # main(email_server,users["chz"])

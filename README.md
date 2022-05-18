@@ -36,9 +36,9 @@ crontab -e
 
 初次进入会让你选编辑器，建议不要使用vscode，用vim/nano等非gui的编辑器较好。
 
-新增一行
+新增一行，注意`path_to_python_interpreter`换成对应的conda或venv环境
 ```
-0 9 * * * python3 {文件夹路径}/ZJU_auto_health_report/clock-in.py 2>&1 null
+0 8 * * * ${path_to_python_interpreter} ${path_to_project_dir}/ZJU_auto_health_report/clock-in.py >/dev/null 2>&1
 ```
 
 
