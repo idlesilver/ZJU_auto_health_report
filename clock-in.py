@@ -259,7 +259,5 @@ if __name__ == "__main__":
     import random
     import time
     for name in users:
-        time.sleep(random.randint(0,60*5))
+        # time.sleep(random.randint(0,60*5))
         main(email_server,users[name])
-
-    # main(email_server,users["zjx"])
