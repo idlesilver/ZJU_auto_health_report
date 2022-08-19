@@ -121,19 +121,22 @@ class DaKa(object):
             self.info[key]=info_dict[key]
 
     def verifiy_code(self):
-        r = self.sess.get(self.verify_code_url)
-        # with open('code.png','wb')as f:
-        #     f.write(r.content)
-            # print("下载验证码成功！")
         ocr = ddddocr.DdddOcr()
-        #with open(r'C:\Users\Administrator\Desktop\验证码识别\code.png', 'rb') as f:
-            #img_bytes = f.read()
-        img_bytes=r.content
+        try:
+            r = self.sess.get(self.verify_code_url)
+            # with open('code.png','wb')as f:
+            #     f.write(r.content)
+                # print("下载验证码成功！")
+            #with open(r'C:\Users\Administrator\Desktop\验证码识别\code.png', 'rb') as f:
+                #img_bytes = f.read()
+            img_bytes=r.content
 
-        res = ocr.classification(img_bytes)
+            res = ocr.classification(img_bytes)
 
-        self.info["verifyCode"] = res
-        
+            self.info["verifyCode"] = res
+        except Exception as e:
+            res = e
+
         return res
 
     def _rsa_encrypt(self, password_str, e_str, M_str):
@@ -231,7 +234,8 @@ def main(email_server, user):
     log.info('正在获取个人信息...')
     try:
         dk.get_info()
-        dk.verifiy_code()
+        verifiy_res = dk.verifiy_code()
+        log.info(f"获取验证码: {verifiy_res}")
         dk.set_info(user["SPECIFIED_INFO"])
         log.info(f"{dk.info['number']} {dk.info['name']}同学, 你好~")
     except Exception as err:
@@ -252,7 +256,10 @@ def main(email_server, user):
 
 
 if __name__ == "__main__":
+    import random
+    import time
     for name in users:
+        time.sleep(random.randint(0,60*5))
         main(email_server,users[name])
 
-    # main(email_server,users["chz"])
+    # main(email_server,users["zjx"])
